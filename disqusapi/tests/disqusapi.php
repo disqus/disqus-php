@@ -40,7 +40,7 @@ class DisqusAPITest extends PHPUnit_Framework_TestCase {
     }
     
     /**
-     * @expectedException APIError
+     * @expectedException DisqusAPIError
      */
     function test_users_listActivity() {
         $api = new DisqusAPI($this->secret);

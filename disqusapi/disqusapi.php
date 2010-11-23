@@ -63,15 +63,21 @@ class DisqusResource {
     }
     
     public function __get($attr) {
-        if (!array_key_exists($attr, $this->interface)) {
+        $interface = $this->interface->$attr;
+        if (!$interface) {
             throw new DisqusInterfaceNotDefined();
         }
-        return new DisqusResource($this->api, $this->interface->$attr, $attr, $this->tree);
+        return new DisqusResource($this->api, $interface, $attr, $this->tree);
     }
     
-    public function __invoke($kwargs=array()) {
-        $resource = $this->interface;
-        foreach ($resource->required as $k) {
+    public function __call($name, $args) {
+        $resource = $this->interface->$name;
+        if (!$resource) {
+            throw new DisqusInterfaceNotDefined();
+        }
+        $kwargs = (array)$args[0];
+        
+        foreach ((array)$resource->required as $k) {
             if (empty($kwargs[$k])) {
                 throw new Exception('Missing required argument: '.$k);
             }
@@ -79,42 +85,42 @@ class DisqusResource {
         
         $api = $this->api;
         
-        if (!empty($kwargs['format'])) {
-            $kwargs['format'] = $api->format;
-        }
         if (!empty($kwargs['api_secret'])) {
             $kwargs['api_secret'] = $api->key;
         }
         
         // emulate a named pop
         $version = (!empty($kwargs['version']) ? $kwargs['version'] : $api->version);
-        unset($kwargs['version']);
+        $format = (!empty($kwargs['format']) ? $kwargs['format'] : $api->format);
+        unset($kwargs['version'], $kwargs['format']);
         
         $url = ($api->is_secure ? 'http://'.DISQUS_API_HOST : 'https://'.DISQUS_API_SSL_HOST);
         $path = '/api/'.$version.implode('/', $this->tree);
         
-        if ($resource->method == 'POST') {
-            $post_data = $kwargs;
-        } else {
-            $post_data = false;
-            $path .= '?'.dsq_get_query_string($kwargs);
+        if (!empty($kwargs)) {
+            if ($resource->method == 'POST') {
+                $post_data = $kwargs;
+            } else {
+                $post_data = false;
+                $path .= '?'.dsq_get_query_string($kwargs);
+            }
         }
         
         $response = dsq_urlopen($url.$path, $postdata);
         
-        $data = call_user_func($api->formats[$kwargs['format']], $response['data']);
+        $data = call_user_func($api->formats[$format], $response['data']);
         
         if ($response['code'] != 200) {
-            throw new DisqusAPIError($data['code'], $data['response']);
+            throw new DisqusAPIError($data->code, $data->response);
         }
         
-        return $data['response'];
+        return $data->response;
     }
 }
 
 
 class DisqusAPI extends DisqusResource {
-    private static $formats = array(
+    public $formats = array(
         'json' => 'dsq_json_decode'
     );
 
