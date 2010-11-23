@@ -37,16 +37,22 @@ if (!extension_loaded('json')) {
 	}	
 }
 
+$DISQUS_API_INTERFACES = dsq_json_decode(file_get_contents(dirname(__FILE__) . '/interfaces.json'));
+
 class DisqusInterfaceNotDefined extends Exception {}
 class DisqusAPIError extends Exception {
-    function __construct($code, $message) {
+    public function __construct($code, $message) {
         $this->code = $code;
         $this->message = $message;
     }
 }
 
 class DisqusResource {
-    function __construct($api, $interface=DISQUS_API_INTERFACES, $node=null, $tree=array()) {
+    public function __construct($api, $interface=null, $node=null, $tree=array()) {
+        if (!$interface) {
+            global $DISQUS_API_INTERFACES;
+            $interface = $DISQUS_API_INTERFACES;
+        }
         $this->api = $api;
         $this->interface = $interface;
         $this->node = $node;
@@ -56,14 +62,14 @@ class DisqusResource {
         $this->tree = $tree;
     }
     
-    function __get($attr) {
+    public function __get($attr) {
         if (!array_key_exists($attr, $this->interface)) {
             throw new DisqusInterfaceNotDefined();
         }
-        return new DisqusResource($this->api, $this->interface[$attr], $attr, $this->tree);
+        return new DisqusResource($this->api, $this->interface->$attr, $attr, $this->tree);
     }
     
-    function __invoke($kwargs=array()) {
+    public function __invoke($kwargs=array()) {
         $resource = $this->interface;
         foreach ($resource->required as $k) {
             if (empty($kwargs[$k])) {
@@ -108,11 +114,11 @@ class DisqusResource {
 
 
 class DisqusAPI extends DisqusResource {
-    private $formats = array(
+    private static $formats = array(
         'json' => 'dsq_json_decode'
     );
 
-    function __construct($key=null, $format='json', $version='3.0', $is_secure=false) {
+    public function __construct($key=null, $format='json', $version='3.0', $is_secure=false) {
         $this->key = $key;
         $this->format = $format;
         $this->version = $version;
@@ -120,19 +126,19 @@ class DisqusAPI extends DisqusResource {
         parent::__construct($this);
     }
 
-    function __invoke() {
+    public function __invoke() {
         throw new Exception('You cannot call the API without a resource.');
     }
 
-    function setKey($key) {
+    public function setKey($key) {
         $this->key = $key;
     }
 
-    function setFormat($format) {
+    public function setFormat($format) {
         $this->format = $format;
     }
     
-    function setVersion($version) {
+    public function setVersion($version) {
         $this->version = $version;
     }
 }

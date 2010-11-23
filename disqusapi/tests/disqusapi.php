@@ -8,6 +8,8 @@ require_once('PHPUnit/Framework.php');
 require_once(dirname(__FILE__) . '/../disqusapi.php');
 
 class DisqusAPITest extends PHPUnit_Framework_TestCase {
+    private $secret = 'a';
+    
     function test_setKey() {
         $api = new DisqusAPI('a');
         $this->assertEquals($api->key, 'a');
@@ -29,9 +31,20 @@ class DisqusAPITest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($api->version, '3.1');
     }
     
+    /**
+     * @expectedException DisqusInterfaceNotDefined
+     */
+    function test_invalid_function() {
+        $api = new DisqusAPI();
+        $api->users->foo(array($foo='bar'));
+    }
+    
+    /**
+     * @expectedException APIError
+     */
     function test_users_listActivity() {
         $api = new DisqusAPI($this->secret);
-        // $this->assertRaises(APIError, api.users.listActivity, foo='bar')
+        $api->users->listActivity(array($foo='bar'));
     }
 }
 
