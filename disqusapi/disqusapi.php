@@ -95,7 +95,7 @@ class DisqusResource {
         unset($kwargs['version'], $kwargs['format']);
         
         $url = ($api->is_secure ? 'http://'.DISQUS_API_HOST : 'https://'.DISQUS_API_SSL_HOST);
-        $path = '/api/'.$version.implode('/', $this->tree);
+        $path = '/api/'.$version.implode('/', $this->tree).'.'.$format;
         
         if (!empty($kwargs)) {
             if ($resource->method == 'POST') {
