@@ -117,7 +117,7 @@ class DisqusAPI extends DisqusResource {
         $this->format = $format;
         $this->version = $version;
         $this->is_secure = $is_secure;
-        parent::__construct();
+        parent::__construct($this);
     }
 
     function __invoke() {
