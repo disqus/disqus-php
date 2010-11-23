@@ -82,7 +82,7 @@ class DisqusResource {
         
         // emulate a named pop
         $version = (!empty($kwargs['version']) ? $kwargs['version'] : $api->version);
-        @unset($kwargs['version']);
+        unset($kwargs['version']);
         
         $url = ($api->is_secure ? 'http://'.DISQUS_API_HOST : 'https://'.DISQUS_API_SSL_HOST);
         $path = '/api/'.$version.implode('/', $this->tree);
@@ -96,7 +96,7 @@ class DisqusResource {
         
         $response = dsq_urlopen($url.$path, $postdata);
         
-        $data = dsq_json_decode($response['data']);
+        $data = call_user_func($api->formats[$kwargs['format']], $response['data']);
         
         if ($response['code'] != 200) {
             throw new DisqusAPIError($data['code'], $data['response']);
@@ -107,11 +107,9 @@ class DisqusResource {
 }
 
 
-class DisqusAPI extends Resource {
+class DisqusAPI extends DisqusResource {
     private $formats = array(
-        'json' => function($x) {
-            return dsq_json_decode($x);
-        }
+        'json' => 'dsq_json_decode'
     );
 
     function __construct($key=null, $format='json', $version='3.0', $is_secure=false) {
@@ -137,3 +135,4 @@ class DisqusAPI extends Resource {
     function setVersion($version) {
         $this->version = $version;
     }
+}
