@@ -1,6 +1,8 @@
 disqus-python
 ~~~~~~~~~~~~~
 
+Requires PHP 5.3.0 or newer!
+
 Use the API by instantiating it, and then calling the method through dotted notation chaining:
 
 	require('disqusapi/disqusapi.php');
