@@ -218,7 +218,7 @@ function _dsq_fopen_urlopen($url, $postdata, &$response, $file_name, $file_field
 /**
  * Wrapper to provide a single interface for making an HTTP request.
  *
- * Attempts to use cURL, fopen(), or fsockopen(), whichever is available
+ * Attempts to use cURL or fsockopen(), whichever is available
  * first.
  *
  * @param    string    $url        URL to make request to.
@@ -244,8 +244,6 @@ function dsq_urlopen($url, $postdata=false, $file=false) {
         $file_field = false;
     }
 
-//
-
     // Try curl, fsockopen, fopen + stream (PHP5 only), exec wget
     if(function_exists('curl_init')) {
      if (!function_exists('curl_setopt_array')) {
@@ -260,14 +258,14 @@ function dsq_urlopen($url, $postdata=false, $file=false) {
          }
      }
      _dsq_curl_urlopen($url, $postdata, $response, $file_name, $file_field);
-    } else if(ini_get('allow_url_fopen') && function_exists('stream_get_contents')) {
-        _dsq_fopen_urlopen($url, $postdata, $response, $file_name, $file_field);
+    // } else if(ini_get('allow_url_fopen') && function_exists('stream_get_contents')) {
+    //     _dsq_fopen_urlopen($url, $postdata, $response, $file_name, $file_field);
     } else {
         // TODO: Find the failure condition for fsockopen() (sockets?)
         _dsq_fsockopen_urlopen($url, $postdata, $response, $file_name, $file_field);
     }
 
-// returns array with keys data and code (from headers)
+    // returns array with keys data and code (from headers)
 
     return $response;
 }
