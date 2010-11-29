@@ -85,7 +85,7 @@ class DisqusResource {
         
         $api = $this->api;
         
-        if (!empty($kwargs['api_secret'])) {
+        if (empty($kwargs['api_secret'])) {
             $kwargs['api_secret'] = $api->key;
         }
         
