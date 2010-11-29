@@ -94,7 +94,7 @@ class DisqusResource {
         $format = (!empty($kwargs['format']) ? $kwargs['format'] : $api->format);
         unset($kwargs['version'], $kwargs['format']);
         
-        $url = ($api->is_secure ? 'http://'.DISQUS_API_HOST : 'https://'.DISQUS_API_SSL_HOST);
+        $url = ($api->is_secure ? 'https://'.DISQUS_API_SSL_HOST : 'http://'.DISQUS_API_HOST);
         $path = '/api/'.$version.implode('/', $this->tree).'.'.$format;
         
         if (!empty($kwargs)) {
