@@ -116,6 +116,10 @@
         }
     },
     "threads": {
+        "create": {
+            "method": "POST",
+            "required": ["forum", "title"]
+        },
         "close": {
             "method": "POST",
             "required": ["thread"]

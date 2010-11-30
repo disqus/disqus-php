@@ -99,9 +99,9 @@ class DisqusResource {
         
         if (!empty($kwargs)) {
             if ($resource->method == 'POST') {
-                $post_data = $kwargs;
+                $postdata = $kwargs;
             } else {
-                $post_data = false;
+                $postdata = false;
                 $path .= '?'.dsq_get_query_string($kwargs);
             }
         }
