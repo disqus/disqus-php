@@ -37,6 +37,8 @@ if (!extension_loaded('json')) {
 	}	
 }
 
+global $DISQUS_API_INTERFACES;
+
 $DISQUS_API_INTERFACES = dsq_json_decode(file_get_contents(dirname(__FILE__) . '/interfaces.json'));
 
 class DisqusInterfaceNotDefined extends Exception {}
@@ -50,7 +52,6 @@ class DisqusAPIError extends Exception {
 class DisqusResource {
     public function __construct($api, $interface=null, $node=null, $tree=array()) {
         if (!$interface) {
-            global $DISQUS_API_INTERFACES;
             $interface = $DISQUS_API_INTERFACES;
         }
         $this->api = $api;
