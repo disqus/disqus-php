@@ -51,6 +51,8 @@ class DisqusAPIError extends Exception {
 
 class DisqusResource {
     public function __construct($api, $interface=null, $node=null, $tree=array()) {
+        global $DISQUS_API_INTERFACES;
+        
         if (!$interface) {
             $interface = $DISQUS_API_INTERFACES;
         }
