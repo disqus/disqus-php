@@ -109,7 +109,8 @@ class DisqusResource {
             }
         }
         
-        $response = dsq_urlopen($url.$path, $postdata);
+
+        $response = dsq_urlopen($url.$path, $post_data);
         
         $data = call_user_func($api->formats[$format], $response['data']);
         
