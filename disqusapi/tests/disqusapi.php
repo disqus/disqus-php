@@ -46,6 +46,22 @@ class DisqusAPITest extends PHPUnit_Framework_TestCase {
         $api = new DisqusAPI($this->secret);
         $api->users->listActivity(array('foo'=>'bar'));
     }
+    
+    /**
+     * @expectedException Exception
+     */
+    function test_posts_create_missing_message() {
+        $api = new DisqusAPI($this->secret);
+        $api->posts->create(array('foo'=>'bar'));
+    }
+    
+    /**
+     * @expectedException DisqusAPIError
+     */
+    function test_posts_create() {
+        $api = new DisqusAPI($this->secret);
+        $api->posts->create(array('message'=>'bar'));
+    }
 }
 
 ?>
