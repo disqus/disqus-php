@@ -36,7 +36,7 @@ class DisqusAPITest extends PHPUnit_Framework_TestCase {
      */
     function test_invalid_function() {
         $api = new DisqusAPI();
-        $api->users->foo(array($foo='bar'));
+        $api->users->foo(array('foo'=>'bar'));
     }
     
     /**
@@ -44,7 +44,7 @@ class DisqusAPITest extends PHPUnit_Framework_TestCase {
      */
     function test_users_listActivity() {
         $api = new DisqusAPI($this->secret);
-        $api->users->listActivity(array($foo='bar'));
+        $api->users->listActivity(array('foo'=>'bar'));
     }
 }
 
