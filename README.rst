@@ -1,5 +1,5 @@
-disqus-python
-~~~~~~~~~~~~~
+disqus-php
+~~~~~~~~~~
 
 Requires PHP 5.3.0 or newer!
 
