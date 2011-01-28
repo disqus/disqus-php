@@ -8,7 +8,7 @@
  * @copyright	2007-2010 Big Head Labs
  * @link		http://disqus.com/
  * @package		disqusapi
- * @version		0.0.1
+ * @version		0.1.0
  * 
  * $disqus = new DisqusAPI($secret_key)
  * $disqus->trends->listThreads()
