@@ -7,7 +7,14 @@ function dsq_get_query_string($postdata) {
 
     if($postdata) {
         foreach($postdata as $key=>$value) {
-            $postdata_str .= urlencode($key) . '=' . urlencode($value) . '&';
+			if (!is_array($value)) {
+            	$postdata_str .= urlencode($key) . '=' . urlencode($value) . '&';
+			} else {
+				// if the item is an array, expands it so that the 'allows multiple' API option can work
+				foreach($value as $multipleValue) {
+					$postdata_str .= urlencode($key) . '=' . urlencode($multipleValue) . '&';
+				}
+			}
         }
     }
 
