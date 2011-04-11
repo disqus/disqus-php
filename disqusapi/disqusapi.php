@@ -107,6 +107,11 @@ class DisqusResource {
 		}
 	    }
         }
+
+	if (!empty($missing)) {
+	    throw new Exception('Missing required argument(s): ' .join(', ', $missing));
+	}
+	unset($missing, $k, $ek);
         
         $api = $this->api;
         
