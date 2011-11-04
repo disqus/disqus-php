@@ -145,10 +145,51 @@ class DisqusResource {
             throw new DisqusAPIError($data->code, $data->response);
         }
         
-        return $data->response;
+        return new DisqusData($data);
     }
 }
 
+/*
+ * The API response data will be accessiable as it was before, but you will now also be able to 
+ * access the cursor information and code.
+ * 
+ * 
+    $posts = $disqus->posts->list(array('limit' => 10));
+  
+    // Same syntax to access the data as before
+    foreach ($posts as $post) {
+        echo $post->id, ' by ', $post->author->name, PHP_EOL;
+    }
+    // or
+    echo $posts[2]->author->name, PHP_EOL;
+  
+    // New
+    print_r($posts->cursor);
+    echo $posts->code;
+ */
+class DisqusData extends ArrayIterator {
+  
+    protected $cursor = array();
+    protected $code = -1;
+
+    public function __construct($data) {       
+        // Keep BC, so we give only the response part to ArrayIterator
+        parent::__construct($data->response);
+        
+        $this->cursor = $data->cursor;
+        $this->code = $data->code;
+    }
+    
+    /*
+     * Not via get*() methods to keep with the syntax specified here:
+     * http://groups.google.com/group/disqus-dev/browse_thread/thread/0fb42bafb74ee663?pli=1
+     */
+    public function __get($name) {
+        //if (isset($this->$name)) {
+            return $this->$name;
+        //}
+    }
+}
 
 class DisqusAPI extends DisqusResource {
     public $formats = array(
