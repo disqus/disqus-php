@@ -80,32 +80,32 @@ class DisqusResource {
         }
         $kwargs = (array)$args[0];
         
-	foreach ((array) $resource->required as $k) {
-	    if (empty($kwargs[$k])) {
-		// Check if query types are available, and we have one we can override
-		if ($resource->query_type && $resource->query_type->insteadof == $k) {
-		    if (empty($kwargs[$resource->query_type->requires])) {
-			$missing[] = $k .  ' or ' . $resource->query_type->requires;
-		    } else {
-			// Check for other required args to make up the query type ..
-			$missing_or = array();
-			foreach ((array) $resource->query_type->with_either as $ek) {
-			    if (isset($kwargs[$ek])) {
-				// Now must have everything needed for the query
-				break;
-			    } else {
-				$missing_or[] = $ek;
-			    }
-			}
-			if (!empty($missing_or)) {
-			    $missing[] = join(' or ', $missing_or);
-			}
-			unset($missing_or);
-		    }
-		} else {
-		    $missing[] = $k;
-		}
-	    }
+        foreach ((array) $resource->required as $k) {
+            if (empty($kwargs[$k])) {
+                // Check if query types are available, and we have one we can override
+                if ($resource->query_type && $resource->query_type->insteadof == $k) {
+                    if (empty($kwargs[$resource->query_type->requires])) {
+                        $missing[] = $k .  ' or ' . $resource->query_type->requires;
+                    } else {
+                        // Check for other required args to make up the query type ..
+                        $missing_or = array();
+                        foreach ((array) $resource->query_type->with_either as $ek) {
+                            if (isset($kwargs[$ek])) {
+                                // Now must have everything needed for the query
+                                break;
+                            } else {
+                                $missing_or[] = $ek;
+                            }
+                        }
+                        if (!empty($missing_or)) {
+                            $missing[] = join(' or ', $missing_or);
+                        }
+                        unset($missing_or);
+                    }
+                } else {
+                    $missing[] = $k;
+                }
+            }
         }
 
 	if (!empty($missing)) {
