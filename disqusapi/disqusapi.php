@@ -176,8 +176,12 @@ class DisqusData extends ArrayIterator {
         // Keep BC, so we give only the response part to ArrayIterator
         parent::__construct($data->response);
         
-        $this->cursor = $data->cursor;
-        $this->code = $data->code;
+        if (isset($data->cursor)) {
+          $this->cursor = $data->cursor;
+        }
+        if (isset($data->code)) {
+          $this->code = $data->code;
+        }
     }
     
     /*
