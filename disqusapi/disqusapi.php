@@ -189,9 +189,13 @@ class DisqusData extends ArrayIterator {
      * http://groups.google.com/group/disqus-dev/browse_thread/thread/0fb42bafb74ee663?pli=1
      */
     public function __get($name) {
-        //if (isset($this->$name)) {
+        if (isset($this->$name)) {
             return $this->$name;
-        //}
+        }
+        // Provide support for single data only response (one row) access.
+        if (isset($this[$name])) {
+          return $this[$name];
+        }
     }
 }
 
