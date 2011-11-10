@@ -8,18 +8,15 @@
  * @copyright	2007-2010 Big Head Labs
  * @link		http://disqus.com/
  * @package		disqusapi
- * @version		0.1.0
- * 
+ * @version		0.1.1
+ *
  * $disqus = new DisqusAPI($secret_key)
  * $disqus->trends->listThreads()
- * 
+ *
  */
 
 if (!defined('DISQUS_API_HOST')) {
     define('DISQUS_API_HOST', 'disqus.com');
-}
-if (!defined('DISQUS_API_SSL_HOST')) {
-    define('DISQUS_API_SSL_HOST', 'secure.disqus.com');
 }
 define('DISQUS_API_VERSION', '0.0.1');
 
@@ -34,7 +31,7 @@ if (!extension_loaded('json')) {
 } else {
 	function dsq_json_decode($data) {
 		return json_decode($data);
-	}	
+	}
 }
 
 global $DISQUS_API_INTERFACES;
@@ -52,7 +49,7 @@ class DisqusAPIError extends Exception {
 class DisqusResource {
     public function __construct($api, $interface=null, $node=null, $tree=array()) {
         global $DISQUS_API_INTERFACES;
-        
+
         if (!$interface) {
             $interface = $DISQUS_API_INTERFACES;
         }
@@ -64,7 +61,7 @@ class DisqusResource {
         }
         $this->tree = $tree;
     }
-    
+
     public function __get($attr) {
         $interface = $this->interface->$attr;
         if (!$interface) {
@@ -72,14 +69,13 @@ class DisqusResource {
         }
         return new DisqusResource($this->api, $interface, $attr, $this->tree);
     }
-    
+
     public function __call($name, $args) {
         $resource = $this->interface->$name;
         if (!$resource) {
             throw new DisqusInterfaceNotDefined();
         }
         $kwargs = (array)$args[0];
-        
         foreach ((array) $resource->required as $k) {
             if (empty($kwargs[$k])) {
                 // Check if query types are available, and we have one we can override
@@ -112,21 +108,21 @@ class DisqusResource {
             throw new Exception('Missing required argument(s): ' .join(', ', $missing));
         }
         unset($missing, $k, $ek);
-        
+
         $api = $this->api;
-        
+
         if (empty($kwargs['api_secret'])) {
             $kwargs['api_secret'] = $api->key;
         }
-        
+
         // emulate a named pop
         $version = (!empty($kwargs['version']) ? $kwargs['version'] : $api->version);
         $format = (!empty($kwargs['format']) ? $kwargs['format'] : $api->format);
         unset($kwargs['version'], $kwargs['format']);
-        
-        $url = ($api->is_secure ? 'https://'.DISQUS_API_SSL_HOST : 'http://'.DISQUS_API_HOST);
+
+        $url = 'https://'.DISQUS_API_HOST;
         $path = '/api/'.$version.'/'.implode('/', $this->tree).'/'.$name.'.'.$format;
-        
+
         if (!empty($kwargs)) {
             if ($resource->method == 'POST') {
                 $post_data = $kwargs;
@@ -135,16 +131,16 @@ class DisqusResource {
                 $path .= '?'.dsq_get_query_string($kwargs);
             }
         }
-        
+
 
         $response = dsq_urlopen($url.$path, $post_data);
-        
+
         $data = call_user_func($api->formats[$format], $response['data']);
-        
+
         if ($response['code'] != 200) {
             throw new DisqusAPIError($data->code, $data->response);
         }
-        
+
         return new DisqusData($data);
     }
 }
@@ -204,11 +200,10 @@ class DisqusAPI extends DisqusResource {
         'json' => 'dsq_json_decode'
     );
 
-    public function __construct($key=null, $format='json', $version='3.0', $is_secure=false) {
+    public function __construct($key=null, $format='json', $version='3.0') {
         $this->key = $key;
         $this->format = $format;
         $this->version = $version;
-        $this->is_secure = $is_secure;
         parent::__construct($this);
     }
 
@@ -223,7 +218,7 @@ class DisqusAPI extends DisqusResource {
     public function setFormat($format) {
         $this->format = $format;
     }
-    
+
     public function setVersion($version) {
         $this->version = $version;
     }
