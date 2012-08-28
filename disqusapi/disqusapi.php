@@ -94,7 +94,7 @@ class DisqusResource {
         $format = (!empty($kwargs['format']) ? $kwargs['format'] : $api->format);
         unset($kwargs['version'], $kwargs['format']);
 
-        $url = 'https://'.DISQUS_API_HOST;
+        $url = ($api->secure ? 'https://'.DISQUS_API_HOST : 'http://'.DISQUS_API_HOST);
         $path = '/api/'.$version.'/'.implode('/', $this->tree).'/'.$name.'.'.$format;
 
         if (!empty($kwargs)) {
@@ -125,10 +125,11 @@ class DisqusAPI extends DisqusResource {
         'json' => 'dsq_json_decode'
     );
 
-    public function __construct($key=null, $format='json', $version='3.0') {
+    public function __construct($key=null, $format='json', $version='3.0', $secure=true) {
         $this->key = $key;
         $this->format = $format;
         $this->version = $version;
+        $this->secure = $secure;
         parent::__construct($this);
     }
 
@@ -146,5 +147,9 @@ class DisqusAPI extends DisqusResource {
 
     public function setVersion($version) {
         $this->version = $version;
+    }
+    
+    public function setSecure($secure) {
+        $this->secure = $secure;
     }
 }
