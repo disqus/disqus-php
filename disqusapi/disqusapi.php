@@ -76,12 +76,38 @@ class DisqusResource {
             throw new DisqusInterfaceNotDefined();
         }
         $kwargs = (array)$args[0];
-
-        foreach ((array)$resource->required as $k) {
+        foreach ((array) $resource->required as $k) {
             if (empty($kwargs[$k])) {
-                throw new Exception('Missing required argument: '.$k);
+                // Check if query types are available, and we have one we can override
+                if ($resource->query_type && $resource->query_type->insteadof == $k) {
+                    if (empty($kwargs[$resource->query_type->requires])) {
+                        $missing[] = $k .  ' or ' . $resource->query_type->requires;
+                    } else {
+                        // Check for other required args to make up the query type ..
+                        $missing_or = array();
+                        foreach ((array) $resource->query_type->with_either as $ek) {
+                            if (isset($kwargs[$ek])) {
+                                // Now must have everything needed for the query
+                                break;
+                            } else {
+                                $missing_or[] = $ek;
+                            }
+                        }
+                        if (!empty($missing_or)) {
+                            $missing[] = join(' or ', $missing_or);
+                        }
+                        unset($missing_or);
+                    }
+                } else {
+                    $missing[] = $k;
+                }
             }
         }
+
+        if (!empty($missing)) {
+            throw new Exception('Missing required argument(s): ' .join(', ', $missing));
+        }
+        unset($missing, $k, $ek);
 
         $api = $this->api;
 
@@ -115,10 +141,59 @@ class DisqusResource {
             throw new DisqusAPIError($data->code, $data->response);
         }
 
-        return $data->response;
+        return new DisqusData($data);
     }
 }
 
+/*
+ * The API response data will be accessiable as it was before, but you will now also be able to 
+ * access the cursor information and code.
+ * 
+ * 
+    $posts = $disqus->posts->list(array('limit' => 10));
+  
+    // Same syntax to access the data as before
+    foreach ($posts as $post) {
+        echo $post->id, ' by ', $post->author->name, PHP_EOL;
+    }
+    // or
+    echo $posts[2]->author->name, PHP_EOL;
+  
+    // New
+    print_r($posts->cursor);
+    echo $posts->code;
+ */
+class DisqusData extends ArrayIterator {
+  
+    protected $cursor = array();
+    protected $code = -1;
+
+    public function __construct($data) {       
+        // Keep BC, so we give only the response part to ArrayIterator
+        parent::__construct($data->response);
+        
+        if (isset($data->cursor)) {
+          $this->cursor = $data->cursor;
+        }
+        if (isset($data->code)) {
+          $this->code = $data->code;
+        }
+    }
+    
+    /*
+     * Not via get*() methods to keep with the syntax specified here:
+     * http://groups.google.com/group/disqus-dev/browse_thread/thread/0fb42bafb74ee663?pli=1
+     */
+    public function __get($name) {
+        if (isset($this->$name)) {
+            return $this->$name;
+        }
+        // Provide support for single data only response (one row) access.
+        if (isset($this[$name])) {
+          return $this[$name];
+        }
+    }
+}
 
 class DisqusAPI extends DisqusResource {
     public $formats = array(

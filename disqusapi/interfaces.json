@@ -29,6 +29,7 @@
       "method": "GET",
       "formats": [
         "json",
+
         "jsonp"
       ]
     },
@@ -437,6 +438,11 @@
       "required": [
         "thread"
       ],
+      "query_type": {
+          "requires": "forum",
+          "insteadof": "thread",
+          "with_either": ["thread:ident", "thread:link" ]
+        },
       "method": "POST",
       "formats": [
         "json",
@@ -445,9 +451,14 @@
     },
     "vote": {
       "required": [
-        "vote",
-        "thread"
+        "thread",
+        "vote"
       ],
+      "query_type": {
+          "requires": "forum",
+          "insteadof": "thread",
+          "with_either": ["thread:ident", "thread:link" ]
+        },
       "method": "POST",
       "formats": [
         "json",
@@ -502,6 +513,15 @@
         "rss"
       ]
     },
+    "listPopular": {
+      "required": [],
+      "method": "GET",
+      "formats": [
+        "json",
+        "jsonp",
+        "rss"
+      ]
+    },
     "update": {
       "required": [
         "thread"
@@ -527,6 +547,11 @@
       "required": [
         "thread"
       ],
+      "query_type": {
+          "requires": "forum",
+          "insteadof": "thread",
+          "with_either": ["thread:ident", "thread:link" ]
+        },
       "method": "GET",
       "formats": [
         "json",
@@ -557,6 +582,11 @@
       "required": [
         "thread"
       ],
+      "query_type": {
+          "requires": "forum",
+          "insteadof": "thread",
+          "with_either": ["thread:ident", "thread:link" ]
+        },
       "method": "POST",
       "formats": [
         "json",
@@ -567,19 +597,30 @@
       "required": [
         "thread"
       ],
+      "query_type": {
+          "requires": "forum",
+          "insteadof": "thread",
+          "with_either": ["thread:ident", "thread:link" ]
+        },
       "method": "POST",
       "formats": [
         "json",
         "jsonp"
       ]
     },
-    "listPopular": {
-      "required": [],
-      "method": "GET",
+    "open": {
+      "required": [
+        "thread"
+      ],
+      "query_type": {
+          "requires": "forum",
+          "insteadof": "thread",
+          "with_either": ["thread:ident", "thread:link" ]
+        },
+      "method": "POST",
       "formats": [
         "json",
-        "jsonp",
-        "rss"
+        "jsonp"
       ]
     }
   },
