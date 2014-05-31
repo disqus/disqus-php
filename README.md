@@ -22,7 +22,7 @@ $ curl -s https://getcomposer.org/installer | php
 Add `jakubzapletal/disqus-php` to `composer.json`:
 
 ```bash
-$ composer require "jakubzapletal/disqus-php:1.0.*@dev"
+$ composer require "jakubzapletal/disqus-php:dev-master"
 ```
 
 
