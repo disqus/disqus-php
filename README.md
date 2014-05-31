@@ -30,4 +30,4 @@ $ composer require "jakubzapletal/disqus-php:1.0.*@dev"
 
 [Usage examples](README.rst).
 
-**Note: Thanks to Composer you don't have to use `require('disqusapi/disqusapi.php');`.**
+**Note:** Thanks to Composer you don't have to use `require('disqusapi/disqusapi.php');`.
