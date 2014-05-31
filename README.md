@@ -1,6 +1,5 @@
 # Disqus PHP
 
-[![Latest Stable Version](https://poser.pugx.org/jakubzapletal/disqus-php/v/stable.png)](https://packagist.org/packages/jakubzapletal/disqus-php)
 [![Total Downloads](https://poser.pugx.org/jakubzapletal/disqus-php/downloads.png)](https://packagist.org/packages/jakubzapletal/disqus-php)
 [![Latest Unstable Version](https://poser.pugx.org/jakubzapletal/disqus-php/v/unstable.png)](https://packagist.org/packages/jakubzapletal/disqus-php)
 [![License](https://poser.pugx.org/jakubzapletal/disqus-php/license.png)](https://packagist.org/packages/jakubzapletal/disqus-php)
