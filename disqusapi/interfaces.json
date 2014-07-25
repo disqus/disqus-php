@@ -220,6 +220,17 @@
         "jsonp"
       ]
     },
+    "update": {
+      "required": [
+        "message",
+        "post"
+      ],
+      "method": "POST",
+      "formats": [
+        "json",
+        "jsonp"
+      ]
+    },
     "list": {
       "required": [],
       "method": "GET",
