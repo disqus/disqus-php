@@ -2,7 +2,7 @@
     "name": "disqus/disqus-php",
     "license": "Apache-2.0",
     "type": "project",
-    "description": "The official PHP client library for disqus, with added composer.json.",
+    "description": "The official PHP client library for Disqus.",
     "autoload": {
         "classmap": { "": "disqusapi/" }
     },
