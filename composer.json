@@ -1,5 +1,5 @@
 {
-    "name": "drexarj/disqus-php",
+    "name": "disqus/disqus-php",
     "license": "Apache-2.0",
     "type": "project",
     "description": "The official PHP client library for disqus, with added composer.json.",
