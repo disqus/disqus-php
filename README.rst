@@ -9,6 +9,11 @@ Use the API by instantiating it, and then calling the method through dotted nota
 	$disqus = new DisqusAPI($secret_key);
 	$disqus->trends->listThreads();
 
+Advanced Example	
+~~~~~~~~~
+* How to integrate Disqus API with your CMS 
+	(http://codexc.com/blog/2015/03/disqus-comments-moderation-in-your-cms/)
+
 Parameters (including the ability to override version, api_secret, and format) are passed as keyword arguments to the resource call::
 
 	$disqus->posts->details(array('post'=>1, 'version'=>'3.0'));
