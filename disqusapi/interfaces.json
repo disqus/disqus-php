@@ -581,6 +581,16 @@
         "jsonp",
         "rss"
       ]
+    },
+    "set": {
+      "required": [
+        "thread"
+      ],
+      "method": "GET",
+      "formats": [
+        "json",
+        "jsonp"
+      ]
     }
   },
   "forums": {
