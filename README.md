@@ -1,10 +1,6 @@
 # Disqus PHP
 
-[![Total Downloads](https://poser.pugx.org/jakubzapletal/disqus-php/downloads.png)](https://packagist.org/packages/jakubzapletal/disqus-php)
-[![Latest Unstable Version](https://poser.pugx.org/jakubzapletal/disqus-php/v/unstable.png)](https://packagist.org/packages/jakubzapletal/disqus-php)
-[![License](https://poser.pugx.org/jakubzapletal/disqus-php/license.png)](https://packagist.org/packages/jakubzapletal/disqus-php)
-
-Disqus API bindings for PHP.
+Disqus API bindings for PHP. This fork is the [packagist version of `disqus/disqus-php`](https://packagist.org/packages/disqus/disqus-php).
 
 Requires PHP 5.3.0 or newer!
 
@@ -18,15 +14,19 @@ If you don't have Composer [install](http://getcomposer.org/doc/00-intro.md#inst
 $ curl -s https://getcomposer.org/installer | php
 ```
 
-Add `jakubzapletal/disqus-php` to `composer.json`:
+Add `disqus/disqus-php` to `composer.json`:
 
 ```bash
-$ composer require "jakubzapletal/disqus-php:dev-master"
+$ composer require "disqus/disqus-php"
 ```
-
 
 ## Usage
 
 [Usage examples](README.rst).
 
-**Note:** Thanks to Composer you don't have to use `require('disqusapi/disqusapi.php');`.
+Thanks to Composer you don't have to use `require('disqusapi/disqusapi.php');`...
+
+``` php
+$disqus = new DisqusAPI($secret_key);
+$disqus->trends->listThreads();
+```
