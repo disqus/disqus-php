@@ -6,10 +6,18 @@
     "autoload": {
         "classmap": [
             "disqusapi/"
+        ],
+        "exclude-from-classmap": [
+            "/disqusapi/tests/"
         ]
     },
     "include-path": [
         "./"
+    ],
+    "replace": [
+        "jakubzapletal/disqus-php",
+        "drexarj/disqus-php",
+        "jasonrgd/disqus-php"
     ],
     "require": {
         "php": ">=5.3.0"
