@@ -1,10 +1,11 @@
 {
-    "name": "jakubzapletal/disqus-php",
+    "name": "disqus/disqus-php",
     "description": "Disqus API bindings for PHP",
     "license": "Apache-2.0",
     "autoload": {
         "classmap": ["disqusapi/"]
     },
+    "include-path": ["./"],
     "require": {
         "php": ">=5.3.0"
     }
