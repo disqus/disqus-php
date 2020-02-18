@@ -295,4 +295,3 @@ function dsq_url_method() {
         return 'fsockopen';
     }
 }
-?>

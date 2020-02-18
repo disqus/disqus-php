@@ -375,4 +375,3 @@ class JSON
         return $e;
     }
 }
-?>

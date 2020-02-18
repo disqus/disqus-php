@@ -19,5 +19,3 @@ class JSONTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($set1, $set2);
 	}
 }
-
-?>
