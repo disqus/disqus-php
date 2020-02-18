@@ -63,5 +63,3 @@ class DisqusAPITest extends PHPUnit_Framework_TestCase {
         $api->posts->create(array('message'=>'bar'));
     }
 }
-
-?>
